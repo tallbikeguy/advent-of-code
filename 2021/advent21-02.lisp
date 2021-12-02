@@ -8,15 +8,54 @@
 
 (in-package :advent21-01)
 
+(defun parse-line (str)
+  (let ((tmpstr (cl-ppcre:split "\ " str) ))
+    (list (car tmpstr) (parse-integer (car (cdr tmpstr))))))
+
+(parse-line '"forward 5")
+    
+
 (defun get-ping-list ()
-  (mapcar #'parse-integer (uiop:read-file-lines "input21-01.txt")))
+  (mapcar #'parse-line (uiop:read-file-lines "inputs/input21-02.txt")))
+
 
 (defparameter +pings+ (get-ping-list))
-(defparameter +pings-test+ '(199 200 208 210 200 207 240 269 260 263))
+(defparameter +pings-test+ '(("forward" 5) ("down" 5) ("forward" 8) ("up" 3) ("down" 8) ("forward" 2)))
 
-(defun list-difference (list)
-  (loop for i from 0 to (- (length list) 2)
-    collect (- (nth (1+ i) list) (nth i list))))
++pings+
++pings-test+
+(defparameter *hpos* 0)
+(defparameter *dpos* 0)
+(defparameter *aim* 0)
+
+(defun calc-move (a)
+  (cond 
+	 ((string= (car a) '"forward") (setq *hpos* (+ *hpos* (car (cdr a)))))
+	 ((string= (car a) '"down")    (progn
+					 (setq *dpos* (+ *dpos* (car (cdr a))))
+					 (setq *aim* (+ *aim* (car (cdr a))))))
+	 ((string= (car a) '"up")      ((setq *aim* (- *aim* (car (cdr a))))))
+	 )
+  )
+
+
+
+(setq *dpos* 0)
+(setq *hpos* 0)
+(setq *aim* 0)
+
+((string= (car '("forward" 5)) '"forward") (setq *hpos* 5))
+						 (+ *hpos* (car (cdr '("forward" 5))))))
+
+(car (cdr '("forward" 5)))
+(string= (car '("forward" 5)) '"forward" )
+
+(calc-move '(('"forward" 5)))
+
+(mapcar #'calc-move +pings+)
+(* *hpos* *dpos*)
+
+
 
 (lisp-unit:define-test test-list-difference
   (lisp-unit:assert-equal 'nil (list-difference '(0) ))

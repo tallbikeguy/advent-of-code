@@ -9,15 +9,20 @@
 (in-package :advent21-01)
 
 (defun get-ping-list ()
-  (mapcar #'parse-integer (uiop:read-file-lines "input21-01.txt")))
+  (mapcar #'parse-integer (uiop:read-file-lines "inputs/input21-01.txt")))
 
 (defparameter +pings+ (get-ping-list))
 (defparameter +pings-test+ '(199 200 208 210 200 207 240 269 260 263))
+
+(loop for (a b) on +pings-test+ while b collect (- b a))
 
 (defun list-difference (list)
   (loop for i from 0 to (- (length list) 2)
     collect (- (nth (1+ i) list) (nth i list))))
 
+(defun list-difference (list)
+  (loop for (a b) on list while b collect (- b a)))
+  
 (lisp-unit:define-test test-list-difference
   (lisp-unit:assert-equal 'nil (list-difference '(0) ))
   (lisp-unit:assert-equal '(1) (list-difference '(0 1)))
@@ -73,6 +78,9 @@
 (lisp-unit:run-tests :all)
 ;;this is the answer to part 2
 (sonar-sweep +pings+)
+
+(time (sonar-sweep +pings+))
+
 
 
 
