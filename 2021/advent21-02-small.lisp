@@ -12,6 +12,9 @@
 (defparameter *dpos* 0)
 (defparameter *aim* 0)
 
+(cl-ppcre:split "\ " '"forward 5")
+http://10.235.0.27:9664/metrics
+
 (defun proc-line (str)
   (let* ((tmpstr (cl-ppcre:split "\ " str) )
          (tmpcmd (car tmpstr))
